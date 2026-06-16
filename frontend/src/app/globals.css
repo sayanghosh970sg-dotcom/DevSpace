@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+:root {
+  --background: #06040d;
+  --foreground: #f8fafc;
+  --indigo-glow: rgba(99, 102, 241, 0.15);
+  --purple-glow: rgba(168, 85, 247, 0.15);
+}
+
+:root.light {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --indigo-glow: rgba(99, 102, 241, 0.05);
+  --purple-glow: rgba(168, 85, 247, 0.05);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans), sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), sans-serif;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 10% 20%, var(--indigo-glow) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, var(--purple-glow) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Glassmorphism details */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+:root.light .glass-panel {
+  background: rgba(15, 23, 42, 0.03);
+  border-color: rgba(15, 23, 42, 0.08);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.2s ease;
+}
+
+:root.light .glass-input {
+  background: rgba(15, 23, 42, 0.02);
+  border-color: rgba(15, 23, 42, 0.08);
+  color: #0f172a;
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  outline: none;
+}
+
+:root.light .glass-input:focus {
+  background: rgba(15, 23, 42, 0.04);
+  border-color: rgba(99, 102, 241, 0.5);
+}
