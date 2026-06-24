@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #06040d;
-  --foreground: #f8fafc;
-  --indigo-glow: rgba(99, 102, 241, 0.15);
-  --purple-glow: rgba(168, 85, 247, 0.15);
+  --background: #121212;
+  --foreground: #ffffff;
+  --indigo-glow: rgba(29, 185, 84, 0.08);
+  --purple-glow: rgba(30, 215, 96, 0.08);
 }
 
 :root.light {
   --background: #f8fafc;
   --foreground: #0f172a;
-  --indigo-glow: rgba(99, 102, 241, 0.05);
-  --purple-glow: rgba(168, 85, 247, 0.05);
+  --indigo-glow: rgba(29, 185, 84, 0.03);
+  --purple-glow: rgba(30, 215, 96, 0.03);
 }
 
 @theme inline {
