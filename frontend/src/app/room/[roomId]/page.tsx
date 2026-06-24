@@ -89,7 +89,7 @@ export default function RoomPage() {
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Generate color palette based on username hash
-  const colors = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#3b82f6', '#8b5cf6', '#ef4444'];
+  const colors = ['#1DB954', '#1ED760', '#34D399', '#22C55E', '#4ADE80', '#6EE7B8', '#0EA5E9'];
   const getUserColor = (id: string) => {
     let hash = 0;
     for (let i = 0; i < id.length; i++) {
@@ -222,7 +222,7 @@ export default function RoomPage() {
       colors: {
         'editor.background': '#0c0a15',
         'editor.lineHighlightBackground': '#161327',
-        'editorCursor.foreground': '#6366f1',
+        'editorCursor.foreground': '#1DB954',
       }
     });
     // Set theme dynamically
@@ -382,16 +382,16 @@ export default function RoomPage() {
       {/* Dynamic Cursor Styles (Clean up injection styles) */}
       
       {/* 1. Header Navigation Bar */}
-      <header className={`h-16 flex items-center justify-between px-6 shrink-0 relative z-20 transition-colors duration-200 ${isDarkMode ? 'bg-[#0c0a15] border-b border-indigo-950/40' : 'bg-white border-b border-slate-200'}`}>
+      <header className={`h-16 flex items-center justify-between px-6 shrink-0 relative z-20 transition-colors duration-200 ${isDarkMode ? 'bg-[#0c0a15] border-b border-emerald-950/40' : 'bg-white border-b border-slate-200'}`}>
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
+          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
             <Code className="w-5 h-5" />
           </div>
           <div>
-            <span className={`font-bold tracking-tight ${isDarkMode ? 'bg-gradient-to-r from-indigo-200 to-purple-200 bg-clip-text text-transparent' : 'text-slate-800'}`}>
+            <span className={`font-bold tracking-tight ${isDarkMode ? 'bg-gradient-to-r from-emerald-200 via-emerald-300 to-emerald-200 bg-clip-text text-transparent' : 'text-slate-800'}`}>
               DevSpace
             </span>
-            <div className="flex items-center gap-1.5 text-xs text-indigo-400 font-mono mt-0.5">
+            <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-mono mt-0.5">
               <span>room:</span>
               <span className={`select-all font-semibold ${isDarkMode ? 'text-gray-400' : 'text-slate-600'}`}>{roomId}</span>
               <span className={`w-1.5 h-1.5 rounded-full ${isConnected ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
@@ -403,7 +403,7 @@ export default function RoomPage() {
           {/* Copy Invite Link */}
           <button
             onClick={copyRoomLink}
-            className="flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 hover:bg-indigo-500/20 hover:text-white transition-all cursor-pointer"
+            className="flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 hover:bg-emerald-500/20 hover:text-white transition-all cursor-pointer"
           >
             {isCopied ? (
               <>
@@ -424,7 +424,7 @@ export default function RoomPage() {
             className={`p-2.5 rounded-xl transition-all cursor-pointer border ${
               isDarkMode 
                 ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400 hover:bg-yellow-500/20' 
-                : 'bg-indigo-500/10 border-indigo-500/20 text-indigo-600 hover:bg-indigo-500/20'
+                : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 hover:bg-emerald-500/20'
             }`}
             title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
@@ -445,14 +445,14 @@ export default function RoomPage() {
       {/* 2. Main Workspace Layout */}
       <div className="flex flex-1 overflow-hidden relative">
         {/* Left Sidebar: Users and Chat */}
-        <aside className={`w-80 border-r flex flex-col shrink-0 transition-colors duration-200 ${isDarkMode ? 'bg-[#0a0812] border-indigo-950/40' : 'bg-slate-100 border-slate-200'}`}>
+        <aside className={`w-80 border-r flex flex-col shrink-0 transition-colors duration-200 ${isDarkMode ? 'bg-[#0a0812] border-emerald-950/40' : 'bg-slate-100 border-slate-200'}`}>
           {/* Sidebar Tabs */}
-          <div className={`grid grid-cols-2 border-b p-2 gap-1.5 shrink-0 transition-colors duration-200 ${isDarkMode ? 'border-indigo-950/30' : 'border-slate-200/60'}`}>
+          <div className={`grid grid-cols-2 border-b p-2 gap-1.5 shrink-0 transition-colors duration-200 ${isDarkMode ? 'border-emerald-950/30' : 'border-slate-200/60'}`}>
             <button
               onClick={() => setSidebarTab('users')}
               className={`flex items-center justify-center gap-2 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer border ${
                 sidebarTab === 'users' 
-                  ? isDarkMode ? 'bg-indigo-500/10 border-indigo-500/20 text-indigo-300' : 'bg-white border-slate-200 text-indigo-600 shadow-sm' 
+                  ? isDarkMode ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-300' : 'bg-white border-slate-200 text-emerald-600 shadow-sm' 
                   : isDarkMode ? 'border-transparent text-slate-400 hover:text-white hover:bg-white/5' : 'border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-200/40'
               }`}
             >
@@ -463,7 +463,7 @@ export default function RoomPage() {
               onClick={() => setSidebarTab('chat')}
               className={`flex items-center justify-center gap-2 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer border ${
                 sidebarTab === 'chat' 
-                  ? isDarkMode ? 'bg-indigo-500/10 border-indigo-500/20 text-indigo-300' : 'bg-white border-slate-200 text-indigo-600 shadow-sm' 
+                  ? isDarkMode ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-300' : 'bg-white border-slate-200 text-emerald-600 shadow-sm' 
                   : isDarkMode ? 'border-transparent text-slate-400 hover:text-white hover:bg-white/5' : 'border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-200/40'
               }`}
             >
@@ -497,7 +497,7 @@ export default function RoomPage() {
                         <div className="text-sm font-semibold truncate flex items-center gap-1.5">
                           <span>{u.username}</span>
                           {isSelf && (
-                            <span className="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/35 px-1.5 py-0.2 rounded-md font-mono">
+                            <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/35 px-1.5 py-0.2 rounded-md font-mono">
                               You
                             </span>
                           )}
@@ -541,7 +541,7 @@ export default function RoomPage() {
                         <div 
                           className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed shadow-sm transition-colors ${
                             isSelf 
-                              ? 'bg-indigo-600 text-white rounded-tr-none' 
+                              ? 'bg-emerald-600 text-white rounded-tr-none' 
                               : isDarkMode 
                                 ? 'bg-white/5 text-slate-200 border border-white/[0.04] rounded-tl-none' 
                                 : 'bg-white text-slate-700 border border-slate-200 rounded-tl-none'
@@ -566,7 +566,7 @@ export default function RoomPage() {
                   />
                   <button
                     type="submit"
-                    className="p-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center transition-colors cursor-pointer"
+                    className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center transition-colors cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
                   </button>
@@ -579,9 +579,9 @@ export default function RoomPage() {
         {/* Center/Right Panels: Code Editor and Preview side-by-side */}
         <main className="flex-1 flex overflow-hidden">
           {/* EDITOR AREA */}
-          <div className={`flex-1 flex flex-col border-r transition-colors duration-200 ${isDarkMode ? 'border-indigo-950/40' : 'border-slate-200'}`}>
+          <div className={`flex-1 flex flex-col border-r transition-colors duration-200 ${isDarkMode ? 'border-emerald-950/40' : 'border-slate-200'}`}>
             {/* Editor Tabs Selector */}
-            <div className={`h-11 border-b flex items-center px-4 justify-between shrink-0 select-none transition-colors duration-200 ${isDarkMode ? 'bg-[#0c0a15] border-indigo-950/30' : 'bg-slate-100 border-slate-200'}`}>
+            <div className={`h-11 border-b flex items-center px-4 justify-between shrink-0 select-none transition-colors duration-200 ${isDarkMode ? 'bg-[#0c0a15] border-emerald-950/30' : 'bg-slate-100 border-slate-200'}`}>
               <div className="flex gap-2">
                 {(['html', 'css', 'js'] as const).map((tab) => {
                   const isTabActive = activeTab === tab;
@@ -591,7 +591,7 @@ export default function RoomPage() {
                       onClick={() => setActiveTab(tab)}
                       className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer border ${
                         isTabActive 
-                          ? isDarkMode ? 'bg-indigo-500/10 border-indigo-500/30 text-indigo-300' : 'bg-white border-slate-200 text-indigo-600 shadow-sm' 
+                          ? isDarkMode ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' : 'bg-white border-slate-200 text-emerald-600 shadow-sm' 
                           : isDarkMode ? 'border-transparent text-slate-400 hover:text-white hover:bg-white/5' : 'border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-200/40'
                       }`}
                     >
@@ -604,7 +604,7 @@ export default function RoomPage() {
 
               {/* Status Indicator */}
               <div className={`text-[10px] font-mono flex items-center gap-1.5 transition-colors ${isDarkMode ? 'text-gray-500' : 'text-slate-400'}`}>
-                <CheckCircle className="w-3.5 h-3.5 text-indigo-400 animate-pulse" />
+                <CheckCircle className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
                 <span>Sync Active</span>
               </div>
             </div>
@@ -631,7 +631,7 @@ export default function RoomPage() {
                   wordWrap: 'on',
                 }}
                 loading={
-                  <div className={`absolute inset-0 flex flex-col items-center justify-center text-indigo-400 gap-3 transition-colors ${isDarkMode ? 'bg-[#0c0a15]' : 'bg-white'}`}>
+                  <div className={`absolute inset-0 flex flex-col items-center justify-center text-emerald-400 gap-3 transition-colors ${isDarkMode ? 'bg-[#0c0a15]' : 'bg-white'}`}>
                     <RefreshCw className="w-8 h-8 animate-spin" />
                     <span className={`text-xs font-semibold font-mono tracking-widest uppercase ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                       Spawning Editor...
@@ -644,7 +644,7 @@ export default function RoomPage() {
 
           {/* LIVE PREVIEW AREA */}
           <div className={`w-[45%] flex flex-col transition-colors duration-200 ${isDarkMode ? 'bg-[#0c0a15]' : 'bg-slate-50'}`}>
-            <div className={`h-11 border-b flex items-center justify-between px-4 shrink-0 transition-colors duration-200 ${isDarkMode ? 'bg-[#090710] border-indigo-950/30' : 'bg-slate-100 border-slate-200'}`}>
+            <div className={`h-11 border-b flex items-center justify-between px-4 shrink-0 transition-colors duration-200 ${isDarkMode ? 'bg-[#090710] border-emerald-950/30' : 'bg-slate-100 border-slate-200'}`}>
               <div className={`flex items-center gap-2 text-xs font-semibold transition-colors ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
                 <Play className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Live View output</span>

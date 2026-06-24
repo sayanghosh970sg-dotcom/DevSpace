@@ -53,16 +53,16 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4 relative overflow-hidden">
       {/* Background glowing decorations */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 left-1/3 -translate-x-1/2 translate-y-1/2 w-[350px] h-[350px] bg-purple-600/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/3 -translate-x-1/2 translate-y-1/2 w-[350px] h-[350px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Main card */}
       <div className="w-full max-w-md z-10">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 mb-4 animate-pulse">
-            <Code2 className="w-8 h-8 text-indigo-400" />
+          <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 mb-4 animate-pulse">
+            <Code2 className="w-8 h-8 text-emerald-400" />
           </div>
-          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-300 via-indigo-200 to-purple-300 bg-clip-text text-transparent mb-2">
+          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-300 via-emerald-200 to-emerald-100 bg-clip-text text-transparent mb-2">
             DevSpace
           </h1>
           <p className="text-gray-400 text-sm max-w-xs mx-auto">
@@ -71,8 +71,8 @@ export default function Home() {
         </div>
 
         <div className="glass-panel rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
-          
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
+
           <form onSubmit={handleJoin} className="space-y-6">
             {/* Username field */}
             <div className="space-y-2">
@@ -102,7 +102,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={generateRoomId}
-                  className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1 transition-colors"
+                  className="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1 transition-colors"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   Generate new
@@ -124,7 +124,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={generateRoomId}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-indigo-400 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-emerald-400 transition-colors"
                   title="Regenerate Room ID"
                 >
                   <RefreshCw className="w-4 h-4" />
@@ -143,7 +143,7 @@ export default function Home() {
             {/* Submit button */}
             <button
               type="submit"
-              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 transition-all hover:-translate-y-0.5 hover:shadow-indigo-500/35 active:translate-y-0 duration-200 cursor-pointer"
+              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25 transition-all hover:-translate-y-0.5 hover:shadow-emerald-500/35 active:translate-y-0 duration-200 cursor-pointer"
             >
               <span>Enter Playground</span>
               <ArrowRight className="w-4 h-4" />

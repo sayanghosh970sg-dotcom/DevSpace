@@ -3,15 +3,15 @@
 :root {
   --background: #06040d;
   --foreground: #f8fafc;
-  --indigo-glow: rgba(99, 102, 241, 0.15);
-  --purple-glow: rgba(168, 85, 247, 0.15);
+  --spotify-glow: rgba(29, 185, 84, 0.18);
+  --spotify-accent-glow: rgba(72, 187, 120, 0.12);
 }
 
 :root.light {
   --background: #f8fafc;
   --foreground: #0f172a;
-  --indigo-glow: rgba(99, 102, 241, 0.05);
-  --purple-glow: rgba(168, 85, 247, 0.05);
+  --spotify-glow: rgba(29, 185, 84, 0.08);
+  --spotify-accent-glow: rgba(72, 187, 120, 0.05);
 }
 
 @theme inline {
@@ -27,8 +27,8 @@ body {
   font-family: var(--font-geist-sans), sans-serif;
   overflow-x: hidden;
   background-image: 
-    radial-gradient(circle at 10% 20%, var(--indigo-glow) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, var(--purple-glow) 0%, transparent 40%);
+    radial-gradient(circle at 10% 20%, var(--spotify-glow) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, var(--spotify-accent-glow) 0%, transparent 40%);
   background-attachment: fixed;
 }
 
@@ -78,12 +78,12 @@ body {
 
 .glass-input:focus {
   background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(99, 102, 241, 0.5);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  border-color: rgba(29, 185, 84, 0.5);
+  box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.2);
   outline: none;
 }
 
 :root.light .glass-input:focus {
   background: rgba(15, 23, 42, 0.04);
-  border-color: rgba(99, 102, 241, 0.5);
+  border-color: rgba(29, 185, 84, 0.5);
 }
