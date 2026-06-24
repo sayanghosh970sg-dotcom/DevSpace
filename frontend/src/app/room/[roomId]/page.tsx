@@ -102,7 +102,7 @@ export default function RoomPage() {
   // 1. Initial Connection Setup
   useEffect(() => {
     // Connect to Backend Socket Server
-    const socket = io('http://localhost:5000', {
+    const socket = io('https://devspace-9o3f.onrender.com', {
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
     });
