@@ -378,274 +378,266 @@ export default function RoomPage() {
     router.push('/');
   };
   return (
-    <div className={`flex flex-col h-screen overflow-hidden transition-colors duration-200 ${isDarkMode ? 'text-slate-100 bg-[#0b1020]' : 'text-slate-900 bg-slate-50'}`}>
-      <div className="absolute inset-0 pointer-events-none opacity-30 [background-image:linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:70px_70px]" />
-
-      <header className={`h-16 flex items-center justify-between px-6 shrink-0 relative z-20 transition-colors duration-200 ${isDarkMode ? 'bg-[#0f1630]/90 border-b border-white/10 backdrop-blur-xl' : 'bg-white/90 border-b border-slate-200 backdrop-blur-xl'}`}>
-        <div className="flex items-center gap-3">
-          <div className="p-3 rounded-2xl border border-cyan-400/30 bg-cyan-400/10 shadow-[0_0_30px_rgba(56,189,248,0.15)] text-cyan-300">
-            <Code className="w-5 h-5" />
-          </div>
-          <div>
-            <span className={`font-black tracking-[0.2em] uppercase text-sm ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-              DevSpace
-            </span>
-            <div className="flex items-center gap-2 text-xs text-slate-400 font-mono mt-0.5">
-              <span>room:</span>
-              <span className={`select-all font-semibold ${isDarkMode ? 'text-slate-200' : 'text-slate-600'}`}>{roomId}</span>
-              <span className={`w-2.5 h-2.5 rounded-full ${isConnected ? 'bg-cyan-400 animate-pulse' : 'bg-rose-500'}`} />
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3">
-          <button
-            onClick={copyRoomLink}
-            className="flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full border border-violet-400/30 bg-violet-500/10 text-violet-200 hover:bg-violet-500/20 transition-all cursor-pointer shadow-[0_0_20px_rgba(139,92,246,0.14)]"
-          >
-            {isCopied ? (
-              <>
-                <Check className="w-4 h-4 text-cyan-300" />
-                <span className="text-cyan-200">Link Copied!</span>
-              </>
-            ) : (
-              <>
-                <Copy className="w-4 h-4" />
-                <span>Invite Friends</span>
-              </>
-            )}
-          </button>
-
-          <button
-            onClick={toggleTheme}
-            className={`p-3 rounded-full transition-all cursor-pointer border ${isDarkMode
-              ? 'bg-white/5 border-white/10 text-slate-100 hover:bg-white/10'
-              : 'bg-slate-100 border-slate-200 text-slate-900 hover:bg-slate-200'
-              }`}
-            title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-          >
-            {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </button>
-
-          <button
-            onClick={handleLeaveRoom}
-            className="flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full border border-pink-400/25 bg-pink-500/10 text-pink-200 hover:bg-pink-500/20 transition-all cursor-pointer"
-          >
-            <LogOut className="w-4 h-4" />
-            <span>Leave Room</span>
-          </button>
-        </div>
-      </header>
-
-      <div className="flex flex-1 overflow-hidden relative">
-        <aside className={`w-80 border-r flex flex-col shrink-0 transition-colors duration-200 ${isDarkMode ? 'bg-[#0f1630]/80 border-white/10' : 'bg-slate-100/80 border-slate-200'}`}>
-          <div className={`grid grid-cols-2 border-b p-2 gap-2 shrink-0 transition-colors duration-200 ${isDarkMode ? 'border-white/10 bg-[#11192f]' : 'border-slate-200/60 bg-slate-50'}`}>
-            <button
-              onClick={() => setSidebarTab('users')}
-              className={`flex items-center justify-center gap-2 py-2 text-xs font-semibold rounded-full transition-all cursor-pointer border ${sidebarTab === 'users'
-                ? isDarkMode ? 'bg-cyan-400/15 border-cyan-400/30 text-cyan-300' : 'bg-white border-slate-200 text-slate-900 shadow-sm'
-                : isDarkMode ? 'border-transparent text-slate-400 hover:text-white hover:bg-white/5' : 'border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-200/60'
-                }`}
-            >
-              <Users className="w-4 h-4" />
-              <span>Users ({users.length})</span>
-            </button>
-            <button
-              onClick={() => setSidebarTab('chat')}
-              className={`flex items-center justify-center gap-2 py-2 text-xs font-semibold rounded-full transition-all cursor-pointer border ${sidebarTab === 'chat'
-                ? isDarkMode ? 'bg-violet-500/15 border-violet-400/30 text-violet-200' : 'bg-white border-slate-200 text-slate-900 shadow-sm'
-                : isDarkMode ? 'border-transparent text-slate-400 hover:text-white hover:bg-white/5' : 'border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-200/60'
-                }`}
-            >
-              <MessageSquare className="w-4 h-4" />
-              <span>Chat ({messages.filter(m => m.senderId !== 'system').length})</span>
-            </button>
-          </div>
-
-          <div className="flex-1 overflow-y-auto p-4">
-            {sidebarTab === 'users' ? (
-              <div className="space-y-3">
-                <h3 className={`text-[11px] font-semibold uppercase tracking-[0.25em] mb-2 transition-colors ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>Active Collaborators</h3>
-                {users.map((u) => {
-                  const uColor = getUserColor(u.socketId);
-                  const isSelf = u.username === username && u.socketId === socketRef.current?.id;
-                  return (
-                    <div
-                      key={u.socketId}
-                      className={`flex items-center gap-3 p-3 rounded-3xl border transition-all ${isDarkMode ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-white border-slate-200 hover:bg-slate-100 text-slate-700 shadow-sm'}`}
-                    >
-                      <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold relative shrink-0"
-                        style={{ backgroundColor: `${uColor}20`, border: `1px solid ${uColor}50`, color: uColor }}
-                      >
-                        {u.username.substring(0, 2).toUpperCase()}
-                        <span className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-cyan-400 border-2 ${isDarkMode ? 'border-[#0f1630]' : 'border-white'}`} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-semibold truncate flex items-center gap-1.5">
-                          <span>{u.username}</span>
-                          {isSelf && (
-                            <span className="text-[10px] bg-cyan-400/15 text-cyan-300 border border-cyan-400/25 px-2 py-0.5 rounded-full font-mono">
-                              You
-                            </span>
-                          )}
-                        </div>
-                        <div className="text-[10px] text-slate-400 font-mono truncate">
-                          ID: {u.socketId.substring(0, 8)}...
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+    <div className="relative min-h-screen overflow-hidden text-white bg-[#050816]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(0,229,255,0.16),_transparent_24%),radial-gradient(circle_at_10%_20%,_rgba(255,77,157,0.14),_transparent_18%),radial-gradient(circle_at_80%_15%,_rgba(139,92,246,0.12),_transparent_20%)]" />
+      <div className="absolute inset-0 pointer-events-none">
+        <span className="floating-light left-10 top-20 w-72 h-72 bg-cyan-400/20 animate-float" />
+        <span className="floating-light right-16 top-32 w-56 h-56 bg-pink-500/18 animate-float-slow" />
+        <span className="floating-light left-1/2 top-10 w-44 h-44 bg-violet-500/22 animate-float" />
+      </div>
+      <div className="relative z-20 flex h-screen flex-col px-4 py-4 lg:px-8 lg:py-6">
+        <div className="glass-panel gradient-border p-5 rounded-[28px] shadow-[0_30px_70px_rgba(0,0,0,0.4)] backdrop-blur-xl border-white/10">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-white/5 px-4 py-2 text-sm text-cyan-100 shadow-[0_0_30px_rgba(0,229,255,0.12)]">
+                <Code className="h-5 w-5 text-cyan-300" />
+                <span className="font-semibold tracking-[0.24em] uppercase">DevSpace</span>
               </div>
-            ) : (
-              <div className="flex flex-col h-full">
-                <div className="flex-1 space-y-3 overflow-y-auto pr-1">
-                  {messages.map((msg) => {
-                    const isSys = msg.senderId === 'system';
-                    const isSelf = msg.senderId === socketRef.current?.id;
-                    const uColor = getUserColor(msg.senderId);
-
-                    if (isSys) {
-                      return (
-                        <div key={msg.id} className={`text-center text-[10px] font-mono my-2.5 py-1.5 px-3 rounded-full border transition-colors ${isDarkMode ? 'text-slate-500 bg-white/5 border-white/10' : 'text-slate-500 bg-slate-200/60 border-slate-200'}`}>
-                          {msg.text}
-                        </div>
-                      );
-                    }
-
-                    return (
-                      <div
-                        key={msg.id}
-                        className={`flex flex-col max-w-[85%] ${isSelf ? 'ml-auto items-end' : 'mr-auto items-start'}`}
-                      >
-                        <span className="text-[10px] text-slate-400 mb-1 flex items-center gap-1 px-1 font-semibold">
-                          <span style={{ color: isSelf ? '#38bdf8' : uColor }}>{msg.sender}</span>
-                          <span>•</span>
-                          <span>{new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                        </span>
-                        <div
-                          className={`rounded-3xl px-4 py-3 text-sm leading-relaxed shadow-[0_20px_60px_-40px_rgba(0,0,0,0.6)] transition-all ${isSelf
-                            ? 'bg-gradient-to-r from-violet-500 to-cyan-400 text-white rounded-br-none'
-                            : isDarkMode
-                              ? 'bg-white/5 text-slate-200 border border-white/10 rounded-bl-none'
-                              : 'bg-slate-100 text-slate-900 border border-slate-200 rounded-bl-none'
-                            }`}
-                        >
-                          {msg.text}
-                        </div>
-                      </div>
-                    );
-                  })}
-                  <div ref={chatEndRef} />
-                </div>
-
-                <form onSubmit={handleSendMessage} className="mt-4 flex gap-2 shrink-0">
-                  <input
-                    type="text"
-                    placeholder="Type a message..."
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    className="flex-1 glass-input rounded-full px-4 py-3 text-xs text-white placeholder:text-slate-500"
-                  />
-                  <button
-                    type="submit"
-                    className="rounded-full bg-gradient-to-r from-violet-500 to-cyan-400 p-3 flex items-center justify-center text-white transition hover:shadow-[0_0_20px_rgba(56,189,248,0.25)] cursor-pointer"
-                  >
-                    <Send className="w-4 h-4" />
-                  </button>
-                </form>
-              </div>
-            )}
-          </div>
-        </aside>
-
-        <main className="flex-1 flex overflow-hidden">
-          <div className={`flex-1 flex flex-col border-r transition-colors duration-200 ${isDarkMode ? 'border-white/10' : 'border-slate-200'}`}>
-            <div className={`h-14 border-b flex items-center px-4 justify-between shrink-0 select-none transition-colors duration-200 ${isDarkMode ? 'bg-[#11192f] border-white/10' : 'bg-slate-100 border-slate-200'}`}>
-              <div className="flex gap-2">
-                {(['html', 'css', 'js'] as const).map((tab) => {
-                  const isTabActive = activeTab === tab;
-                  return (
-                    <button
-                      key={tab}
-                      onClick={() => setActiveTab(tab)}
-                      className={`flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full transition-all cursor-pointer border ${isTabActive
-                        ? isDarkMode ? 'bg-cyan-400/15 border-cyan-400/30 text-cyan-300' : 'bg-white border-slate-200 text-slate-900 shadow-sm'
-                        : isDarkMode ? 'border-transparent text-slate-400 hover:text-white hover:bg-white/5' : 'border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-200/60'
-                        }`}
-                    >
-                      <FileCode className="w-4 h-4" />
-                      <span className="uppercase">{tab}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className={`text-[10px] font-mono flex items-center gap-1.5 transition-colors ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                <CheckCircle className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-                <span>Sync Active</span>
+              <div className="flex flex-wrap items-center gap-3 text-sm text-slate-300">
+                <span className="text-slate-400 uppercase tracking-[0.3em] text-[0.68rem]">Room</span>
+                <span className="rounded-2xl bg-white/5 px-3 py-2 text-sm font-semibold tracking-wide text-cyan-100 shadow-[0_0_30px_rgba(0,229,255,0.12)]">{roomId}</span>
+                <span className="inline-flex items-center gap-2 rounded-full bg-[#021025] px-3 py-2 text-[0.78rem] font-medium text-cyan-200 shadow-[0_0_20px_rgba(0,229,255,0.18)]">
+                  <span className="status-dot animate-pulse" />
+                  {isConnected ? 'Connected' : 'Disconnected'}
+                </span>
               </div>
             </div>
 
-            <div className={`flex-1 relative transition-colors duration-200 ${isDarkMode ? 'bg-[#0d1327]' : 'bg-white'}`}>
-              <Editor
-                height="100%"
-                language={activeTab === 'js' ? 'javascript' : activeTab}
-                theme={isDarkMode ? 'devspace-dark' : 'vs'}
-                value={code[activeTab]}
-                onChange={handleEditorChange}
-                onMount={handleEditorDidMount}
-                options={{
-                  minimap: { enabled: false },
-                  fontSize: 14,
-                  lineHeight: 22,
-                  fontFamily: 'var(--font-geist-mono), Courier New, monospace',
-                  cursorBlinking: 'smooth',
-                  cursorSmoothCaretAnimation: 'on',
-                  smoothScrolling: true,
-                  padding: { top: 12, bottom: 12 },
-                  tabSize: 2,
-                  wordWrap: 'on',
-                }}
-                loading={
-                  <div className={`absolute inset-0 flex flex-col items-center justify-center text-cyan-300 gap-3 transition-colors ${isDarkMode ? 'bg-[#0d1327]' : 'bg-white'}`}>
-                    <RefreshCw className="w-8 h-8 animate-spin" />
-                    <span className={`text-xs font-semibold font-mono tracking-widest uppercase ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                      Spawning Editor...
-                    </span>
-                  </div>
-                }
-              />
-            </div>
-          </div>
-
-          <div className={`w-[45%] flex flex-col transition-colors duration-200 ${isDarkMode ? 'bg-[#11192f]' : 'bg-slate-50'}`}>
-            <div className={`h-14 border-b flex items-center justify-between px-4 shrink-0 transition-colors duration-200 ${isDarkMode ? 'bg-[#11192f] border-white/10' : 'bg-slate-100 border-slate-200'}`}>
-              <div className={`flex items-center gap-2 text-xs font-semibold transition-colors ${isDarkMode ? 'text-slate-200' : 'text-slate-600'}`}>
-                <Play className="w-4 h-4 text-cyan-400" />
-                <span>Live View output</span>
-              </div>
+            <div className="flex flex-wrap items-center gap-3">
               <button
-                onClick={() => setPreviewKey(prev => prev + 1)}
-                className={`p-2 rounded-full transition-all cursor-pointer ${isDarkMode ? 'bg-white/5 text-slate-300 hover:bg-white/10' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
-                title="Force reload preview"
+                onClick={copyRoomLink}
+                className="neon-button rounded-full px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] shadow-[0_0_18px_rgba(0,229,255,0.18)] transition-all hover:scale-[1.01]"
               >
-                <RefreshCw className="w-4 h-4" />
+                {isCopied ? (
+                  <span className="inline-flex items-center gap-2 text-cyan-100">
+                    <Check className="h-4 w-4" />
+                    Link Copied!
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-2 text-cyan-100">
+                    <Copy className="h-4 w-4" />
+                    Invite Friends
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={toggleTheme}
+                className="glass-panel flex h-12 w-12 items-center justify-center rounded-3xl border border-cyan-300/15 text-cyan-100 transition hover:-translate-y-0.5 hover:border-cyan-300/40"
+                title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              >
+                {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </button>
+              <button
+                onClick={handleLeaveRoom}
+                className="neon-button rounded-full px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-pink-100 shadow-[0_0_18px_rgba(255,77,157,0.2)] transition-all hover:scale-[1.01]"
+              >
+                <span className="inline-flex items-center gap-2">
+                  <LogOut className="h-4 w-4" />
+                  Leave Room
+                </span>
               </button>
             </div>
-
-            <div className="flex-1 overflow-hidden bg-[#060915]">
-              <iframe
-                key={previewKey}
-                srcDoc={getCompiledSource()}
-                title="DevSpace Compiler Sandbox"
-                sandbox="allow-scripts"
-                className="w-full h-full border-none bg-[#060915]"
-              />
-            </div>
           </div>
-        </main>
+        </div>
+
+        <div className="mt-5 flex flex-1 flex-col gap-5 lg:flex-row">
+          <aside className="glass-panel w-full rounded-[28px] border border-white/10 bg-[#06121f]/90 p-5 shadow-[0_38px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl lg:w-96">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="panel-heading">Workspace</p>
+                  <h2 className="text-2xl font-semibold tracking-tight text-white">Live collaboration</h2>
+                </div>
+                <div className="rounded-3xl bg-[#071525] px-4 py-2 text-xs uppercase tracking-[0.2em] text-cyan-200">AI Mode</div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => setSidebarTab('users')}
+                  className={`pill-tab flex items-center justify-center gap-2 ${sidebarTab === 'users' ? 'pill-active' : 'text-slate-300/80 border border-white/5 bg-white/5'}`}
+                >
+                  <Users className="h-4 w-4" />
+                  <span>Users</span>
+                </button>
+                <button
+                  onClick={() => setSidebarTab('chat')}
+                  className={`pill-tab flex items-center justify-center gap-2 ${sidebarTab === 'chat' ? 'pill-active' : 'text-slate-300/80 border border-white/5 bg-white/5'}`}
+                >
+                  <MessageSquare className="h-4 w-4" />
+                  <span>Chat</span>
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto pr-1">
+                {sidebarTab === 'users' ? (
+                  <div className="space-y-4">
+                    <div className="border-b border-white/10 pb-3">
+                      <p className="text-[0.7rem] uppercase tracking-[0.3em] text-slate-500">Active collaborators</p>
+                    </div>
+                    {users.map((u) => {
+                      const uColor = getUserColor(u.socketId);
+                      const isSelf = u.username === username && u.socketId === socketRef.current?.id;
+                      return (
+                        <div key={u.socketId} className="user-card flex items-center gap-4 rounded-[24px] p-4 transition duration-300 hover:border-cyan-300/25 hover:bg-white/10">
+                          <div className="relative">
+                            <div
+                              className="flex h-14 w-14 items-center justify-center rounded-3xl border border-white/10 text-lg font-bold"
+                              style={{ backgroundColor: `${uColor}20`, color: uColor }}
+                            >
+                              {u.username.substring(0, 2).toUpperCase()}
+                            </div>
+                            <span className="status-dot absolute -right-1 -bottom-1 border border-[#050816]" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-base font-semibold text-white truncate">{u.username}</p>
+                            <p className="mt-1 text-sm text-slate-400">ID: {u.socketId.substring(0, 8)}...</p>
+                          </div>
+                          {isSelf ? (
+                            <span className="rounded-full bg-cyan-500/10 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-cyan-100">You</span>
+                          ) : (
+                            <span className="rounded-full bg-white/5 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-slate-300">Live</span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="flex h-full flex-col justify-between gap-4">
+                    <div className="space-y-4 overflow-y-auto pr-1">
+                      {messages.map((msg) => {
+                        const isSys = msg.senderId === 'system';
+                        const isSelf = msg.senderId === socketRef.current?.id;
+                        const uColor = getUserColor(msg.senderId);
+
+                        if (isSys) {
+                          return (
+                            <div key={msg.id} className="chat-bubble rounded-full px-4 py-2 text-center text-xs uppercase tracking-[0.25em] text-slate-400 shadow-[0_0_24px_rgba(0,0,0,0.15)]">
+                              {msg.text}
+                            </div>
+                          );
+                        }
+
+                        return (
+                          <div key={msg.id} className={`flex flex-col max-w-[88%] ${isSelf ? 'ml-auto items-end' : 'mr-auto items-start'}`}>
+                            <div className="flex items-center gap-2 text-[0.7rem] font-medium uppercase tracking-[0.2em] text-slate-400">
+                              <span style={{ color: isSelf ? '#00e5ff' : uColor }}>{msg.sender}</span>
+                              <span>•</span>
+                              <span>{new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            </div>
+                            <div className={`chat-bubble mt-2 max-w-[480px] px-5 py-4 text-sm leading-6 ${isSelf ? 'bg-gradient-to-r from-cyan-500/15 to-violet-500/15 text-white border border-cyan-300/20 rounded-br-[4px]' : 'bg-white/5 text-slate-200 border border-white/10 rounded-bl-[4px]'}`}>
+                              {msg.text}
+                            </div>
+                          </div>
+                        );
+                      })}
+                      <div ref={chatEndRef} />
+                    </div>
+
+                    <form onSubmit={handleSendMessage} className="mt-2 flex gap-3 rounded-[24px] border border-white/10 bg-[#07101f]/90 p-3 shadow-[inset_0_0_30px_rgba(0,0,0,0.18)]">
+                      <input
+                        type="text"
+                        placeholder="Type a message..."
+                        value={inputText}
+                        onChange={(e) => setInputText(e.target.value)}
+                        className="glass-input h-14 rounded-[22px] border-white/10 bg-white/5 px-5 text-sm text-white placeholder:text-slate-500"
+                      />
+                      <button
+                        type="submit"
+                        className="neon-button flex h-14 w-14 items-center justify-center rounded-[22px] text-white transition hover:shadow-[0_0_24px_rgba(0,229,255,0.2)]"
+                      >
+                        <Send className="h-5 w-5" />
+                      </button>
+                    </form>
+                  </div>
+                )}
+              </div>
+            </div>
+          </aside>
+
+          <main className="flex flex-1 flex-col gap-5">
+            <div className="grid gap-5 lg:grid-cols-[1.45fr_0.95fr]">
+              <div className="glass-panel editor-frame border border-white/10 shadow-[0_35px_80px_rgba(0,0,0,0.4)]">
+                <div className="flex h-16 items-center justify-between border-b border-white/10 px-5">
+                  <div className="flex items-center gap-3">
+                    {(['html', 'css', 'js'] as const).map((tab) => {
+                      const isTabActive = activeTab === tab;
+                      return (
+                        <button
+                          key={tab}
+                          onClick={() => setActiveTab(tab)}
+                          className={`flex items-center gap-2 rounded-full px-4 py-3 text-sm font-semibold transition duration-300 ${isTabActive ? 'bg-[#071828] text-cyan-100 shadow-[0_0_25px_rgba(0,229,255,0.14)]' : 'text-slate-300 hover:bg-white/5 hover:text-white'}`}
+                        >
+                          <FileCode className="h-4 w-4" />
+                          <span className="uppercase tracking-[0.2em]">{tab}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="inline-flex items-center gap-2 rounded-3xl bg-[#02101f] px-4 py-3 text-xs uppercase tracking-[0.24em] text-cyan-200 shadow-[0_0_24px_rgba(0,229,255,0.12)]">
+                    <CheckCircle className="h-4 w-4 text-cyan-300 animate-pulse" />
+                    Sync Active
+                  </div>
+                </div>
+
+                <div className="h-[calc(100%-4rem)] bg-[#050816]">
+                  <Editor
+                    height="100%"
+                    language={activeTab === 'js' ? 'javascript' : activeTab}
+                    theme={isDarkMode ? 'devspace-dark' : 'vs'}
+                    value={code[activeTab]}
+                    onChange={handleEditorChange}
+                    onMount={handleEditorDidMount}
+                    options={{
+                      minimap: { enabled: false },
+                      fontSize: 15,
+                      lineHeight: 24,
+                      fontFamily: 'var(--font-geist-mono), Courier New, monospace',
+                      cursorBlinking: 'smooth',
+                      cursorSmoothCaretAnimation: 'on',
+                      smoothScrolling: true,
+                      padding: { top: 16, bottom: 16 },
+                      tabSize: 2,
+                      wordWrap: 'on',
+                    }}
+                    loading={
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#050816] text-cyan-300">
+                        <RefreshCw className="h-10 w-10 animate-spin" />
+                        <span className="text-sm font-semibold tracking-[0.22em] uppercase text-slate-400">
+                          Spawning Editor...
+                        </span>
+                      </div>
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="glass-panel preview-shell border border-white/10 shadow-[0_35px_80px_rgba(0,0,0,0.4)]">
+                <div className="flex h-16 items-center justify-between border-b border-white/10 px-5">
+                  <div className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.22em] text-slate-300">
+                    <Play className="h-4 w-4 text-cyan-300" />
+                    Live preview
+                  </div>
+                  <button
+                    onClick={() => setPreviewKey(prev => prev + 1)}
+                    className="glass-panel flex h-12 w-12 items-center justify-center rounded-3xl border border-cyan-300/15 text-cyan-100 transition hover:bg-white/5"
+                    title="Force reload preview"
+                  >
+                    <RefreshCw className="h-5 w-5" />
+                  </button>
+                </div>
+                <div className="h-[calc(100%-4rem)] overflow-hidden bg-[#050816]">
+                  <iframe
+                    key={previewKey}
+                    srcDoc={getCompiledSource()}
+                    title="DevSpace Compiler Sandbox"
+                    sandbox="allow-scripts"
+                    className="h-full w-full border-none bg-[#050816]"
+                  />
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
       </div>
     </div>
   );
